@@ -122,6 +122,15 @@ module.exports = function (app) {
 };
 ```
 
+Now, let's run and see the demo.
+
+First, we download a api request collection for postman
+
+[gif]
+
+After that, we create a new user.
+send post request to
+
 
 ## Hooks
 
