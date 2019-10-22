@@ -1,4 +1,16 @@
-# feathers.js
+# Feathers.js
+>  Feathers is a web-framework for creating real-time applications and REST APIs using JavaScript or TypeScript with Node.JS, React Native and the browser.
+> 
+> It works with any backend supporting many databases out of the box and with any frontend technology like React, VueJS, Angular, Android or iOS.
+> 
+> Build prototypes in minutes and production-ready apps in days.
+> Seriously. 
+
+*quote taken from [https://feathersjs.com/](https://feathersjs.com/)*
+
+The focus of this framework is to reduce boilerplates for the developer, so we can focus more on logic. This is similar to the philosophy of Rails, so if you're from a RoR background, you'll fit in here just fine. 
+
+One big plus point of the Feathers framework is it's consistancy. It's library is always backward compatible and never comes with any breaking features. Now, without talking more, lets jump straight in.
 
 # Creating a project
 
@@ -17,14 +29,18 @@ feathers generate app
 ```
 You'll be shown a number of options you can choose from. For this example, we'll not be using any fully fledged database service, we'll use NeDB to store the data. Here are the options selected for the project.
 
-[Pic1]
-[pic2]
+![](https://images.viblo.asia/c935d75f-fbfd-4c9c-a7ae-39c253e7b26e.png)
+
+![](https://images.viblo.asia/c893c59f-0f87-4777-a80e-1e2114a1c351.png)
 
 
 # Application architecture
-[Pic3]
-[Pic4]
+Lets inspect what we got as our app architecture.
+![](https://images.viblo.asia/ac0b7772-9c69-4bca-90e6-aa472a08e637.png)
+
 The feathers.js official guide explains with great detail what each file and directory does. You can read more from [here](https://docs.feathersjs.com/guides/basics/generator.html#the-generated-files)
+
+![](https://images.viblo.asia/8eb55cc4-adbb-4662-8f0a-0366fa56f3d8.png)
 
 
 ## Services
@@ -47,7 +63,7 @@ feathers generate service
 again, it will ask you some details about the service.
 lets name our service `messages`. Heres the options we choose.
 
-[messages_service.pic]
+![](https://images.viblo.asia/68f82267-24b9-4747-98f9-0e8f5a2468ee.png)
 
 now let's see what did the generator made for us.
 
@@ -124,17 +140,110 @@ module.exports = function (app) {
 
 Now, let's run and see the demo.
 
-First, we download a api request collection for postman
+First, we download a api request collection for postman from [here](https://explore.postman.com/team/feathersjs).
 
-[gif]
+![](https://images.viblo.asia/b20bcffb-c256-4939-a132-72cd3a9e52f2.gif)
 
 After that, we create a new user.
-send post request to
+
+#### Creating a new user
+```bash
+POST: http://localhost:3030/users
+
+# body
+{
+  "email": "voda@example.com",
+  "password": "secret"
+}
+
+# response
+{
+    "email": "voda@example.com",
+    "_id": "LMDiTvAt3WTMP9WY"
+}
+```
+![](https://images.viblo.asia/10489e91-5876-427f-8d97-45238e0bd1be.png)
+
+#### Creating auth
+Now, we need to get the auth token for the generated user. 
+```bash
+POST: http://localhost:3030/authentication
+
+# body
+{
+	"strategy": "local",
+	"email": "voda@example.com",
+    "password": "secret"
+}
+
+# response
+{
+    "accessToken": "eyJhbGciOiJIUzI1NiIsInR5cCI6ImFjY2VzcyJ9.eyJpYXQiOjE1NjkzMzY5OTEsImV4cCI6MTU2OTQyMzM5MSwiYXVkIjoiaHR0cHM6Ly95b3VyZG9tYWluLmNvbSIsImlzcyI6ImZlYXRoZXJzIiwic3ViIjoiTE1EaVR2QXQzV1RNUDlXWSIsImp0aSI6IjdmMjUxMjcxLTk0ZDMtNDBjMy1hMWQyLTFiOWFiYTc5ZjVhYSJ9.wuIdYSo01hl19062e1bA45kLaWhby239FZGeQsKZRks",
+    "authentication": {
+        "strategy": "local"
+    },
+    "user": {
+        "email": "voda@example.com",
+        "_id": "LMDiTvAt3WTMP9WY"
+    }
+}
+```
+![](https://images.viblo.asia/823015b2-5176-425f-8b3c-d0e077d14087.png)
 
 
-## Hooks
+#### Create a new message
+Using the auth token we just received, we'll create a new message
+```bash
+POST: http://localhost:3030/messages
 
+# body
+{
+	"name": "Postman",
+	"text": "Hello from Postman"
+}
+
+# response
+{
+    "name": "Postman",
+    "text": "Hello from Postman",
+    "_id": "J1PZoRwnf52GhT49"
+}
+```
+![](https://images.viblo.asia/2a620687-8e9e-40a9-8edc-cdf09c337b79.png)
+
+#### Get messages
+same as above
+```bash
+GET: http://localhost:3030/messages
+
+# response
+{
+    "total": 1,
+    "limit": 10,
+    "skip": 0,
+    "data": [
+        {
+            "name": "Postman",
+            "text": "Hello from Postman",
+            "_id": "J1PZoRwnf52GhT49"
+        }
+    ]
+}
+
+```
+![](https://images.viblo.asia/f22264b7-bce4-449a-b651-5d1934466a16.png)
+
+To read more about Services and creating custom services, you can read the [official docs](https://docs.feathersjs.com/api/services.html#get-id-params).
+
+## What's next
+We will discuss more about **custom services** and **Hooks** on the next part of this series. Stay tuned.
+
+## Source code
+I highly suggest you code alomg, but if you want you can just pull this source code too
+https://github.com/SSalekin/Intro-to-feathers
 
 ## Resources
 
 [Feathers.js official docs](https://docs.feathersjs.com/guides/basics/starting.html)
+
+[Udemy: Fundamentals of Feathers.js (outdated)](https://www.udemy.com/course/fundamentals-of-feathersjs)
